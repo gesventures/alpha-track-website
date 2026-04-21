@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alpha Track — From Idea to Fundable Company</title>
+  <meta name="description" content="Alpha Track is a venture creation platform powered by GES Ventures. We build venture-scale companies through product definition, market positioning, and capital alignment." />
+  <style>
+    :root {
+      --bg: #05070a;
+      --panel: rgba(255,255,255,0.045);
+      --panel-2: rgba(255,255,255,0.06);
+      --line: rgba(255,255,255,0.10);
+      --line-soft: rgba(255,255,255,0.07);
+      --text: #f5f7fb;
+      --muted: rgba(245,247,251,0.74);
+      --soft: rgba(245,247,251,0.56);
+      --faint: rgba(245,247,251,0.34);
+      --gold: #d8c38c;
+      --radius-lg: 24px;
+      --shadow: 0 30px 80px rgba(0,0,0,0.42);
+      --max: 1220px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 8% 8%, rgba(255,255,255,0.08), transparent 18%),
+        radial-gradient(circle at 92% 88%, rgba(255,255,255,0.05), transparent 20%),
+        linear-gradient(180deg, #040609 0%, #07090d 42%, #05070a 100%);
+      line-height: 1.5;
+    }
+    a { color: inherit; text-decoration: none; }
+    .page {
+      position: relative;
+      overflow: hidden;
+      min-height: 100vh;
+    }
+    .page::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 30%),
+        linear-gradient(to bottom, rgba(255,255,255,0.02), transparent 16%, transparent 82%, rgba(255,255,255,0.02));
+      z-index: 0;
+    }
+    .container {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 24px 0 18px;
+      border-bottom: 1px solid var(--line-soft);
+      backdrop-filter: blur(16px);
+      background: rgba(5,7,10,0.68);
+    }
+    .brand { display: flex; flex-direction: column; gap: 4px; }
+    .brand-name {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+    .brand-sub { font-size: 13px; color: var(--faint); }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      color: var(--soft);
+      font-size: 14px;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.05);
+      transition: 0.25s ease;
+      font-size: 14px;
+    }
+    .nav-cta:hover { background: rgba(255,255,255,0.10); }
+
+    .hero {
+      padding: 86px 0 46px;
+      max-width: 980px;
+    }
+    h1 { margin: 0; max-width: 980px; }
+    .hero-kicker {
+      margin-top: 24px;
+      font-size: 22px;
+      color: #e8e8e8;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .hero-lead {
+      margin-top: 18px;
+      max-width: 760px;
+      font-size: 20px;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+    .hero-conversion {
+      margin-top: 26px;
+      max-width: 740px;
+      font-size: 19px;
+      line-height: 1.7;
+      color: #d8d8d8;
+      font-weight: 600;
+    }
+    .hero-actions {
+      margin-top: 34px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px 22px;
+      border-radius: 16px;
+      font-size: 15px;
+      font-weight: 600;
+      transition: 0.25s ease;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+    .btn.primary { background: #fff; color: #05070a; }
+    .btn.primary:hover { transform: translateY(-1px); }
+    .btn.secondary {
+      background: rgba(255,255,255,0.04);
+      border-color: var(--line);
+      color: var(--text);
+    }
+    .btn.secondary:hover { background: rgba(255,255,255,0.08); }
+    .hero-meta { margin-top: 34px; color: var(--faint); font-size: 14px; }
+
+    .hero-grid, .grid-2, .grid-3 {
+      display: grid;
+      gap: 20px;
+    }
+    .hero-grid {
+      grid-template-columns: 1.15fr 0.85fr;
+      padding: 18px 0 36px;
+    }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+    .panel, .card {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+    }
+    .card {
+      transition: 0.26s ease;
+      box-shadow: none;
+    }
+    .card:hover { transform: translateY(-4px); background: var(--panel-2); }
+
+    .panel-kicker, .section-kicker, .tag, .journey-index {
+      color: var(--faint);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 11px;
+    }
+    .panel-kicker, .section-kicker { margin-bottom: 14px; }
+    .thesis-list { display: grid; gap: 14px; }
+    .thesis-item {
+      border: 1px solid var(--line-soft);
+      border-radius: 18px;
+      padding: 18px;
+      background: rgba(0,0,0,0.18);
+      font-size: 17px;
+      color: rgba(255,255,255,0.92);
+    }
+    .scarcity-box {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 100%;
+    }
+    .scarcity-number {
+      font-size: 54px;
+      line-height: 1;
+      letter-spacing: -0.05em;
+      color: var(--gold);
+      font-weight: 700;
+      margin: 8px 0 12px;
+    }
+    .scarcity-text {
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.8;
+      max-width: 320px;
+    }
+    .section {
+      padding: 92px 0;
+      border-top: 1px solid var(--line-soft);
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 28px;
+      margin-bottom: 34px;
+    }
+    h2 {
+      margin: 0;
+      font-size: clamp(34px, 4vw, 58px);
+      line-height: 1.04;
+      letter-spacing: -0.04em;
+      max-width: 760px;
+    }
+    .section-intro {
+      margin: 0;
+      max-width: 520px;
+      color: var(--soft);
+      font-size: 16px;
+      line-height: 1.8;
+    }
+    .card h3 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+    .card p {
+      margin: 18px 0 0;
+      color: var(--soft);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+    .journey-step {
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+    }
+    .journey-title {
+      margin-top: 56px;
+      font-size: 32px;
+      line-height: 1.06;
+      letter-spacing: -0.04em;
+      font-weight: 600;
+    }
+    .quote-card {
+      border: 1px dashed rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.028);
+    }
+    .quote {
+      font-size: 24px;
+      line-height: 1.5;
+      letter-spacing: -0.02em;
+      color: rgba(255,255,255,0.92);
+    }
+    .profile-img {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      border-radius: 18px;
+      margin-bottom: 22px;
+      background: rgba(255,255,255,0.04);
+    }
+    .apply-wrap {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    .side-panel { position: sticky; top: 96px; }
+    .side-panel ul {
+      margin: 18px 0 0;
+      padding-left: 18px;
+      color: var(--soft);
+      line-height: 1.9;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .field.full { grid-column: 1 / -1; }
+    label {
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 15px 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      font-size: 15px;
+      outline: none;
+      transition: 0.2s ease;
+      font-family: inherit;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: rgba(255,255,255,0.24);
+      background: rgba(255,255,255,0.06);
+    }
+    textarea {
+      min-height: 130px;
+      resize: vertical;
+      line-height: 1.7;
+    }
+    .form-note, .hero-meta, .brand-sub, .footer { color: var(--faint); }
+    .form-note { margin-top: 14px; font-size: 13px; line-height: 1.7; }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 18px;
+    }
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      border-top: 1px solid var(--line-soft);
+      padding: 28px 0 44px;
+      font-size: 14px;
+    }
+    @media (max-width: 1080px) {
+      .hero-grid, .grid-2, .grid-3, .apply-wrap, .contact-grid, .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .section-header {
+        flex-direction: column;
+        align-items: start;
+      }
+      .side-panel { position: static; }
+    }
+    @media (max-width: 780px) {
+      .nav-links { display: none; }
+      .container { width: min(var(--max), calc(100% - 28px)); }
+      .hero { padding-top: 56px; }
+      .footer { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="container">
+      <header class="nav">
+        <a href="#home" class="brand">
+          <span class="brand-name">Alpha Track</span>
+          <span class="brand-sub">by GES Ventures</span>
+        </a>
+        <nav class="nav-links">
+          <a href="#about">About</a>
+          <a href="#how-it-works">How It Works</a>
+          <a href="#leadership">Leadership</a>
+          <a href="#advisors">Advisors</a>
+          <a href="#investors">Investors</a>
+          <a href="#apply">Apply</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <a href="#apply" class="nav-cta">Apply Now</a>
+      </header>
+
+      <section class="hero" id="home">
+        <h1 style="font-size:clamp(44px,6.4vw,76px);line-height:1.0;letter-spacing:-0.045em;margin:0 0 8px 0;max-width:860px;">
+          Venture Creation Platform
+        </h1>
+        <h1 style="font-size:clamp(58px,9vw,108px);line-height:0.96;letter-spacing:-0.055em;margin:0;max-width:980px;">
+          Build the Next Generation of AI Companies
+        </h1>
+        <div class="hero-kicker">From Idea to Fundable Company</div>
+        <div class="hero-lead">We build venture-scale companies through product definition, market positioning, and capital alignment.</div>
+        <div class="hero-conversion">Most ideas never become companies. We make sure yours does.</div>
+        <div class="hero-actions">
+          <a href="#apply" class="btn primary">Apply</a>
+          <a href="#about" class="btn secondary">How It Works</a>
+        </div>
+        <div class="hero-meta">Powered by GES Ventures · Silicon Valley</div>
+      </section>
+
+      <section class="hero-grid">
+        <div class="panel">
+          <div class="panel-kicker">What Alpha Track Is</div>
+          <div class="thesis-list">
+            <div class="thesis-item">Define the company</div>
+            <div class="thesis-item">Build the structure</div>
+            <div class="thesis-item">Position for capital</div>
+          </div>
+        </div>
+        <div class="panel scarcity-box">
+          <div>
+            <div class="panel-kicker">Model</div>
+            <div class="scarcity-number">Idea → Company → Capital</div>
+            <div class="scarcity-text">A clear path from conviction to fundability.</div>
+          </div>
+          <div class="hero-actions" style="margin-top:24px;">
+            <a href="#apply" class="btn secondary" style="width:100%;">Start</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="about">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">About</div>
+            <h2>Not consulting. Company creation.</h2>
+          </div>
+          <p class="section-intro">Alpha Track is a venture creation platform powered by GES Ventures.</p>
+        </div>
+
+        <div class="grid-3">
+          <article class="card">
+            <div class="tag">Direction</div>
+            <h3>Find the right company</h3>
+            <p>Clarify the opportunity and define what should be built.</p>
+          </article>
+          <article class="card">
+            <div class="tag">Execution</div>
+            <h3>Build with structure</h3>
+            <p>Turn conviction into product, GTM, and company form.</p>
+          </article>
+          <article class="card">
+            <div class="tag">Capital</div>
+            <h3>Make it fundable</h3>
+            <p>Prepare the narrative, positioning, and readiness for investors.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="how-it-works">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">How It Works</div>
+            <h2>Three steps. One outcome.</h2>
+          </div>
+          <p class="section-intro">Reduce ambiguity. Increase speed. Build a company investors can understand.</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card journey-step">
+            <div class="journey-index">01</div>
+            <div>
+              <div class="journey-title">Direction</div>
+              <p>Define the opportunity.</p>
+            </div>
+          </div>
+          <div class="card journey-step">
+            <div class="journey-index">02</div>
+            <div>
+              <div class="journey-title">Structure</div>
+              <p>Build the product, story, and company logic.</p>
+            </div>
+          </div>
+          <div class="card journey-step">
+            <div class="journey-index">03</div>
+            <div>
+              <div class="journey-title">Capital</div>
+              <p>Position for fundraising.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">System</div>
+            <h2>Define. Build. Fund.</h2>
+          </div>
+          <p class="section-intro">A simple operating system for turning early conviction into venture readiness.</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <h3>Define</h3>
+            <p>Clarify the problem, product, and market.</p>
+          </div>
+          <div class="card">
+            <h3>Build</h3>
+            <p>Create the structure, narrative, and momentum.</p>
+          </div>
+          <div class="card">
+            <h3>Fund</h3>
+            <p>Align the company with capital expectations.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="portfolio">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">Portfolio</div>
+            <h2>Proof of execution.</h2>
+          </div>
+          <p class="section-intro">Representative company-building paths across founders, ventures, and capital.</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <div class="tag">Reposition</div>
+            <h3>Sharpen the thesis</h3>
+            <p>Turn weak or unclear ideas into focused, investable venture opportunities.</p>
+          </div>
+          <div class="card">
+            <div class="tag">Structure</div>
+            <h3>Build the company</h3>
+            <p>Define product, company structure, and narrative that investors can understand and back.</p>
+          </div>
+          <div class="card">
+            <div class="tag">Fund</div>
+            <h3>Position for capital</h3>
+            <p>Prepare companies for fundraising, timing, and investor alignment.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="leadership">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">Leadership</div>
+            <h2>Built by founders with venture perspective.</h2>
+          </div>
+          <p class="section-intro">Alpha Track is led by operators focused on company creation, venture structuring, and turning early conviction into fundable companies.</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <img src="jenny-li.jpg" alt="Jenny Li" class="profile-img" />
+            <div class="tag">Founder</div>
+            <h3>Jenny Li</h3>
+            <p style="margin-top:10px;color:var(--muted);">Founder · Venture Platform</p>
+            <p>Builds venture platforms across Silicon Valley and global markets.</p>
+            <p>Focused on turning ideas into fundable companies.</p>
+          </div>
+
+          <div class="card">
+            <img src="jeffrey-wei.png" alt="Jeffrey Wei" class="profile-img" />
+            <div class="tag">Co-Founder</div>
+            <h3>Jeffrey Wei</h3>
+            <p style="margin-top:10px;color:var(--muted);">Co-Founder · Venture Structuring</p>
+            <p>Focused on company formation, capital strategy, and venture structuring.</p>
+            <p>Works across deal formation and investor alignment — turning early-stage opportunities into structured, fundable companies.</p>
+            <p>Bridges founders, capital, and company architecture to accelerate the path from idea to execution.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="advisors">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">Advisors</div>
+            <h2>Supported by experienced operators, investors, and domain experts.</h2>
+          </div>
+          <p class="section-intro">Alpha Track is supported by advisors across venture, company building, strategy, and market development.</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <img src="jason-butcher.jpg" alt="Jason Butcher" class="profile-img" />
+            <div class="tag">Advisor</div>
+            <h3>Jason Butcher</h3>
+            <p style="margin-top:10px;color:var(--muted);">Entrepreneur · Investor · Advisor</p>
+            <p>Entrepreneur and investor focused on building and scaling impactful ventures.</p>
+            <p>Advises on strategy, growth, and global positioning across innovation and investment ecosystems.</p>
+          </div>
+
+          <div class="card">
+            <img src="paul-fahn.jpg" alt="Paul Fahn" class="profile-img" />
+            <div class="tag">Advisor</div>
+            <h3>Paul Fahn</h3>
+            <p style="margin-top:10px;color:var(--muted);">Operator · Advisor</p>
+            <p>Experienced operator with a background in building and scaling businesses across global markets.</p>
+            <p>Advises on execution, market expansion, and operational strategy.</p>
+          </div>
+
+          <div class="card">
+            <img src="mark-wickham.jpg" alt="Mark Wickham" class="profile-img" />
+            <div class="tag">Advisor</div>
+            <h3>Mark Wickham</h3>
+            <p style="margin-top:10px;color:var(--muted);">Investor · Advisor</p>
+            <p>Investor with experience in venture-backed companies and strategic growth.</p>
+            <p>Supports Alpha Track on capital strategy, positioning, and investment alignment.</p>
+          </div>
+
+          <div class="card">
+            <img src="steven-li.jpg" alt="Steven Li" class="profile-img" />
+            <div class="tag">Advisor</div>
+            <h3>Steven Li</h3>
+            <p style="margin-top:10px;color:var(--muted);">Entrepreneur · Advisor</p>
+            <p>Entrepreneur with experience across technology and business development.</p>
+            <p>Advises on company building, market strategy, and founder growth.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="founder-value">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">For Founders</div>
+            <h2>Two founder types. One standard.</h2>
+          </div>
+          <p class="section-intro">Whether you are building from zero or building beyond inheritance, the requirement is the same: clarity, execution, and fundability.</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="tag">Next-Generation Founders</div>
+            <h3>Build beyond inheritance</h3>
+            <p>Develop entrepreneurial judgment, leadership, and the ability to create independently.</p>
+          </div>
+          <div class="card">
+            <div class="tag">First-Time Founders</div>
+            <h3>Cross the hardest stage</h3>
+            <p>Move from uncertainty to structure, and from structure to capital readiness.</p>
+          </div>
+        </div>
+
+        <div class="card quote-card" style="margin-top:20px;">
+          <div class="quote">This is not a course. It is company creation.</div>
+        </div>
+      </section>
+
+      <section class="section" id="investors">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">For Investors</div>
+            <h2>Curated companies. Clearer entry.</h2>
+          </div>
+          <p class="section-intro">Alpha Track creates structured, venture-shaped opportunities for aligned investors.</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <h3>Curated Deal Flow</h3>
+            <p>Access selected founder opportunities earlier.</p>
+          </div>
+          <div class="card">
+            <h3>Stronger Evaluation</h3>
+            <p>Meet companies with clearer positioning and structure.</p>
+          </div>
+          <div class="card">
+            <h3>Capital Alignment</h3>
+            <p>Engage where timing and readiness align.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="grid-2">
+          <div class="card quote-card">
+            <div class="quote">Most ideas never become companies. We make sure yours does.</div>
+          </div>
+          <div class="card quote-card">
+            <div class="quote">Not consulting. Company creation.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="apply">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">Apply</div>
+            <h2>Apply to Alpha Track.</h2>
+          </div>
+          <p class="section-intro">We accept a small number of founders each cycle. For ambitious founders building companies that deserve to exist.</p>
+        </div>
+
+        <div class="apply-wrap">
+          <div class="panel side-panel">
+            <div class="panel-kicker">Who Should Apply</div>
+            <h3 style="margin:0;font-size:32px;line-height:1.1;letter-spacing:-0.03em;">Founders with conviction, speed, and the willingness to build seriously.</h3>
+            <ul>
+              <li>AI-native founders or domain experts building in large markets</li>
+              <li>Teams with early conviction but unfinished product or GTM structure</li>
+              <li>Projects that can become venture-scale companies</li>
+              <li>Founders open to genuine strategic collaboration</li>
+            </ul>
+            <div class="panel-kicker" style="margin-top:26px;">Process</div>
+            <ul>
+              <li>Apply</li>
+              <li>Review</li>
+              <li>Interview</li>
+              <li>Build Sprint / Decision</li>
+            </ul>
+          </div>
+
+          <div class="card form-card">
+            <form>
+              <div class="form-grid">
+                <div class="field">
+                  <label>Full Name</label>
+                  <input type="text" placeholder="Your name" />
+                </div>
+                <div class="field">
+                  <label>Email</label>
+                  <input type="email" placeholder="you@company.com" />
+                </div>
+                <div class="field">
+                  <label>Company / Project Name</label>
+                  <input type="text" placeholder="Company or project" />
+                </div>
+                <div class="field">
+                  <label>Stage</label>
+                  <select>
+                    <option>Idea Stage</option>
+                    <option>Early Product</option>
+                    <option>Pre-Fundraising</option>
+                    <option>Investor Ready</option>
+                  </select>
+                </div>
+                <div class="field full">
+                  <label>What are you building?</label>
+                  <textarea placeholder="Describe the company, problem, customer, and product vision."></textarea>
+                </div>
+                <div class="field full">
+                  <label>Why now?</label>
+                  <textarea placeholder="Why is this the right timing for this company to exist?"></textarea>
+                </div>
+                <div class="field full">
+                  <label>Why you?</label>
+                  <textarea placeholder="Why are you the right founder or team for this problem?"></textarea>
+                </div>
+                <div class="field full">
+                  <label>What is your unfair advantage?</label>
+                  <textarea placeholder="What gives you a real edge: insight, access, technology, speed, or founder-market fit?"></textarea>
+                </div>
+                <div class="field full">
+                  <label>Website / Deck / Demo / LinkedIn</label>
+                  <input type="text" placeholder="Paste links here" />
+                </div>
+              </div>
+
+              <div class="hero-actions" style="margin-top:8px;">
+                <button class="btn primary" type="submit">Submit Application</button>
+                <a class="btn secondary" href="mailto:hello@alphatrack.co">Email Instead</a>
+              </div>
+              <div class="form-note">This static version is ready for developer handoff. Connect the form to Webflow, Formspree, HubSpot, Airtable, or a custom backend.</div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">FAQ</div>
+            <h2>Clear answers.</h2>
+          </div>
+          <p class="section-intro">What founders and investors usually need to know first.</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Is Alpha Track a consulting company?</h3>
+            <p>No. Alpha Track is a venture creation platform.</p>
+          </div>
+          <div class="card">
+            <h3>Do you invest?</h3>
+            <p>Selected companies may be introduced to GES Ventures and aligned investors.</p>
+          </div>
+          <div class="card">
+            <h3>Do you take equity?</h3>
+            <p>In deeper collaborations, equity may be part of the structure.</p>
+          </div>
+          <div class="card">
+            <h3>Who is this for?</h3>
+            <p>Founders building AI companies with venture-scale ambition.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="contact">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">Contact</div>
+            <h2>Start the conversation.</h2>
+          </div>
+          <p class="section-intro">For founders, investors, and strategic partners who want to explore Alpha Track.</p>
+        </div>
+
+        <div class="contact-grid">
+          <div class="card">
+            <div class="tag">Email</div>
+            <h3>hello@alphatrack.co</h3>
+            <p>For founder applications, investor access, and general inquiries.</p>
+          </div>
+          <div class="card">
+            <div class="tag">Location</div>
+            <h3>Silicon Valley</h3>
+            <p>Operating at the intersection of venture creation, AI, and global innovation.</p>
+          </div>
+          <div class="card">
+            <div class="tag">Platform</div>
+            <h3>Powered by GES Ventures</h3>
+            <p>Alpha Track is built on the broader venture platform and ecosystem of GES Ventures.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="narrative">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">Alpha Track</div>
+            <h2>From Potential to Fundable.</h2>
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <h3>Clarity</h3>
+            <p>Define the right company.</p>
+          </div>
+          <div class="card">
+            <h3>Execution</h3>
+            <p>Build with speed and structure.</p>
+          </div>
+          <div class="card">
+            <h3>Fundability</h3>
+            <p>Make it investable.</p>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div>© Alpha Track by GES Ventures</div>
+        <div>Build the Next Generation of AI Companies · From Idea to Fundable Company</div>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>
